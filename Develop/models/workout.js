@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
+// Another way to do this?
 // Child schema method:
 // const exercisesSchema = new Schema({
 //     type: {
@@ -30,8 +31,9 @@ const workoutSchema = new Schema({
     day: {
         type: Date,
     },
-    // Child scheme method
+    // If using the child scheme method
     // exercises: exercisesSchema
+    
     exercises: [{ type: String, name: String, duration: Number, weight: Number, reps: Number, sets: Number}]
 });
 

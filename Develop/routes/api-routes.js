@@ -1,4 +1,3 @@
-const router = require("express").Router();
 const Workout = require("../models/workout.js");
 
 // Initial seed of database - used once to fill database and then commented out 
@@ -133,41 +132,20 @@ const Workout = require("../models/workout.js");
 //     });
 
 // Routes:
+module.exports = (app) => {
+
+app.get("/api/workouts", (req, res) => {
+  Workout.find({})
+    .sort({ day: 1 })
+    .then(dbWorkouts => {
+        console.log("Workouts: " + dbWorkouts);
+      res.json(dbWorkouts);
+    })
+    .catch(err => {
+      res.status(400).json(err);
+    });
+});
+};
 
 
-module.exports = router;
-
-
-
-
-// router.post("/api/transaction", ({ body }, res) => {
-//   Transaction.create(body)
-//     .then(dbTransaction => {
-//       res.json(dbTransaction);
-//     })
-//     .catch(err => {
-//       res.status(400).json(err);
-//     });
-// });
-
-// router.post("/api/transaction/bulk", ({ body }, res) => {
-//   Transaction.insertMany(body)
-//     .then(dbTransaction => {
-//       res.json(dbTransaction);
-//     })
-//     .catch(err => {
-//       res.status(400).json(err);
-//     });
-// });
-
-// router.get("/api/transaction", (req, res) => {
-//   Transaction.find({})
-//     .sort({ date: -1 })
-//     .then(dbTransaction => {
-//       res.json(dbTransaction);
-//     })
-//     .catch(err => {
-//       res.status(400).json(err);
-//     });
-// });
 

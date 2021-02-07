@@ -119,7 +119,7 @@ const Workout = require("../models/workout.js");
 //       ]
 //     }
 //   ];
-  
+
 //   Workout.deleteMany({})
 //     .then(() => Workout.collection.insertMany(workoutSeed))
 //     .then(data => {
@@ -132,19 +132,30 @@ const Workout = require("../models/workout.js");
 //     });
 
 // Routes:
+
 module.exports = (app) => {
 
-app.get("/api/workouts", (req, res) => {
-  Workout.find({})
-    .sort({ day: 1 })
-    .then(dbWorkouts => {
-        console.log("Workouts: " + dbWorkouts);
-      res.json(dbWorkouts);
-    })
-    .catch(err => {
-      res.status(400).json(err);
+    app.get("/api/workouts", (req, res) => {
+        // First sum up the duration of exercises for each document (day)
+        console.log("Adding a field");
+        Workout.aggregate([
+            {
+                $addFields: {
+                    totalDuration: { $sum: { exercises: {$elemMatch: {duration: {$gt: 0} } }}},
+                }
+            }
+        ])
+
+        Workout.find()
+            // .sort({ day: 1 })
+            .then(dbWorkouts => {
+                console.log("Workouts: " + dbWorkouts);
+                res.json(dbWorkouts);
+            })
+            .catch(err => {
+                res.status(400).json(err);
+            });
     });
-});
 };
 
 

@@ -141,13 +141,11 @@ module.exports = (app) => {
         Workout.aggregate([
             {
                 $addFields: {
-                    totalDuration: { $sum: { exercises: {$elemMatch: {duration: {$gt: 0} } }}},
+                    totalDuration: { $sum: "$exercises.duration" },
                 }
             }
         ])
-
-        Workout.find()
-            // .sort({ day: 1 })
+        // Now return the database 
             .then(dbWorkouts => {
                 console.log("Workouts: " + dbWorkouts);
                 res.json(dbWorkouts);
@@ -157,6 +155,4 @@ module.exports = (app) => {
             });
     });
 };
-
-
 

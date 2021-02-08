@@ -28,6 +28,6 @@ Contact the author with questions via GitHub or email at
 
 [JonPointer at GitHub](https://github.com/JonPointer)<br>jonpointer@msn.com
 ## Screenshot
-![Screenshot](./Develop/public/images/screenshot.png)
+![Screenshot](./public/images/screenshot.png)
 ## Deployed-App
 [Deployed App on Heroku](https://tranquil-bastion-69503.herokuapp.com/)

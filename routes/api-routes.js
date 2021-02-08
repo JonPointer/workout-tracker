@@ -28,8 +28,16 @@ module.exports = (app) => {
     app.get("/api/workouts/range", (req, res) => {
         Workout.aggregate([
             {
-                // Select the last 7 workouts
+                // Sort descending so most recent days are first
+                $sort: { day: -1 }
+            },
+            {
+                // Select the 7 most recent workouts
                 $limit: 7
+            },
+            {
+                // Now sort ascending so most recent days are last so plots will go left to right
+                $sort: { day: 1 }
             },
             {
                 // Now compute the total duration with these last 7 workouts
@@ -49,11 +57,11 @@ module.exports = (app) => {
     });
 
     // Route to add a workout
-    app.post("/api/workouts", ({body}, res) => {
+    app.post("/api/workouts", ({ body }, res) => {
         // set the day
         let day = new Date();
         // Create the workout
-        Workout.create({day, body})
+        Workout.create({ day, body })
             .then(dbWorkouts => {
                 res.json(dbWorkouts);
             })
@@ -65,7 +73,7 @@ module.exports = (app) => {
     // Route to add exercises to an existing workout
     app.put("/api/workouts/:id", (req, res) => {
         let bodyExercises = req.body;
-        Workout.updateOne({ _id: req.params.id }, { $push: { "exercises": bodyExercises }})
+        Workout.updateOne({ _id: req.params.id }, { $push: { "exercises": bodyExercises } })
             .then(dbWorkouts => {
                 res.json(dbWorkouts);
             })

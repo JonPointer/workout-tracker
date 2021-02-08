@@ -10,6 +10,7 @@ const workoutSchema = new Schema({
 
     exercises: [
         {
+            _id: false,
             type: {
                 type: String,
                 trim: true
@@ -34,9 +35,11 @@ const workoutSchema = new Schema({
                 type: Number
             },
         },
-        { _id : false }
+        // { _id: false }
     ]
-});
+},
+    { versionKey: false }
+);
 
 const Workout = mongoose.model("Workout", workoutSchema);
 
